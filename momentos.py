@@ -10,6 +10,23 @@ from google.appengine.ext import ndb
 from google.appengine.ext import db
 from google.appengine.api import images
 
+import geobox
+
+RADIUS = 6378100
+
+GEOBOX_CONFIGS = (
+  (4, 5, True),
+  (3, 2, True),
+  (3, 8, False),
+  (3, 16, False),
+  (2, 5, False),
+)
+
+def _earth_distance(lat1, lon1, lat2, lon2):
+  lat1, lon1 = math.radians(float(lat1)), math.radians(float(lon1))
+  lat2, lon2 = math.radians(float(lat2)), math.radians(float(lon2))
+  return RADIUS * math.acos(math.sin(lat1) * math.sin(lat2) +
+      math.cos(lat1) * math.cos(lat2) * math.cos(lon2 - lon1))
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -21,6 +38,7 @@ class Momento(ndb.Model):
     date = ndb.DateTimeProperty(auto_now_add=True)
     text = ndb.StringProperty(indexed=False)
     location = ndb.GeoPtProperty()
+    geoboxes = ndb.StringProperty(repeated=True)
     image = ndb.BlobProperty(default=None)
     thumbnail = ndb.BlobProperty(default=None)
 
@@ -29,7 +47,8 @@ class Momento(ndb.Model):
             'key' : self.key.urlsafe(),
             'date' : self.date.isoformat(),
             'text' : self.text,
-            'location' : self.location,
+            'lat' : self.location.lat,
+            'lon' : self.location.lon,
         }
         if self.author:
             d['author'] = self.author.nickname()
@@ -45,6 +64,62 @@ class Momento(ndb.Model):
             d['image'] = None
         return d
 
+    @classmethod
+    def add(self, author, text, lat, lon, image):
+        location = ndb.GeoPt(lat, lon)
+        momento = Momento(author=author, text=text, location=location)
+
+        if image:
+            momento.image = db.Blob(image)
+            thumbnail = images.resize(image, 100, 100)
+            momento.thumbnail = db.Blob(thumbnail)
+
+        all_boxes = []
+        for (resolution, slice, use_set) in GEOBOX_CONFIGS:
+          if use_set:
+            all_boxes.extend(geobox.compute_set(lat, lon, resolution, slice))
+          else:
+            all_boxes.append(geobox.compute(lat, lon, resolution, slice))
+        print "Geoboxes ", all_boxes
+        momento.geoboxes = all_boxes
+
+        momento.put()
+
+
+    @classmethod
+    def near_location(self, lat, lon, max_results, min_params):
+        found_momentos = {}
+
+        # Do concentric queries until the max number of results is reached.
+        for params in GEOBOX_CONFIGS:
+            if len(found_momentos) >= max_results:
+                break
+            if params < min_params:
+                break
+
+            resolution, slice, unused = params
+            box = geobox.compute(lat, lon, resolution, slice)
+            print "Searching for box=%s at resolution=%s, slice=%s" % (box, resolution, slice)
+            query = Momento.query(Momento.geoboxes == box)
+            results = query.fetch(100)
+            print "Found %d results" % len(results)
+
+            # De-dupe results.
+            for result in results:
+                print result.text
+                if result.key not in found_momentos:
+                    found_momentos[result.key] = result
+
+        # Now compute distances and sort by distance.
+        # momentos_by_distance = []
+        # for momento in found_momentos.itervalues():
+        #     distance = _earth_distance(lat, lon, momento.location.lat, momento.location.lon)
+        #     momentos_by_distance.append((distance, momento))
+
+        # momentos_by_distance.sort()
+
+        # return momentos_by_distance
+        return results
 
 class DebugPage(webapp2.RequestHandler):
 
@@ -67,8 +142,10 @@ class DebugPage(webapp2.RequestHandler):
 
 class GetMomentos(webapp2.RequestHandler):
     def get(self):
-        momento_query = Momento.query()
-        momentos = momento_query.fetch(20)
+        user_pos_lat = float(self.request.get('lat'))
+        user_pos_lon = float(self.request.get('lon'))
+        momentos = Momento.near_location(user_pos_lat, user_pos_lon, 25, (2, 0))
+
         self.response.headers['Content-Type'] = 'application/json'
         momento_list = [ m.serialize() for m in momentos ]
         obj = {
@@ -98,18 +175,11 @@ class GetMomentoThumbnail(webapp2.RequestHandler):
 
 class PostMomento(webapp2.RequestHandler):
     def post(self):
-        momento = Momento()
-
-        if users.get_current_user():
-            momento.author = users.get_current_user()
-
-        momento.text = self.request.get('text')
-        image = self.request.get('image')
-        if image:
-            momento.image = db.Blob(image)
-            thumbnail = images.resize(image, 100, 100)
-            momento.thumbnail = db.Blob(thumbnail)
-        momento.put()
+        Momento.add(author = users.get_current_user(), 
+            text = self.request.get('text'), 
+            lat=float(self.request.get('lat')), 
+            lon=float(self.request.get('lon')),
+            image=self.request.get('image'))
 
         self.redirect('/debug')
 
