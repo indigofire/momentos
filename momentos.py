@@ -8,6 +8,7 @@ import json
 from google.appengine.api import users
 from google.appengine.ext import ndb
 from google.appengine.ext import db
+from google.appengine.api import images
 
 
 JINJA_ENVIRONMENT = jinja2.Environment(
@@ -87,7 +88,10 @@ class PostMomento(webapp2.RequestHandler):
 
         momento.text = self.request.get('text')
         image = self.request.get('image')
-        momento.image = db.Blob(image)
+        if image:
+            momento.image = db.Blob(image)
+            thumbnail = images.resize(image, 100, 100)
+            momento.thumbnail = db.Blob(thumbnail)
         momento.put()
 
         self.redirect('/debug')
