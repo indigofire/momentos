@@ -5,6 +5,15 @@ api_version: 1
 threadsafe: true
 
 handlers:
-- url: /.*
+- url: /stylesheets
+  static_dir: stylesheets
+- url: /guestbook/.*
   script: hello_world.application
+- url: /.*
+  script: momentos.application
 
+libraries:
+- name: webapp2
+  version: latest
+- name: jinja2
+  version: latest

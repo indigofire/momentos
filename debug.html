@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+  <body>
+    <h1>Welcome to Momentos!</h1>
+    <h2>Show me momentos</h2>
+    <form action="/get_momentos" method="get">
+      <div><input type="submit" value="Get"></div>
+    </form>
+
+    <h2>Get a single momento</h2>
+    <form action="/momento" method="get">
+      <div><textarea name="momento_id" rows="1" cols="25"></textarea></div>
+      <div><input type="submit" value="Show"></div>
+    </form>
+    
+    <h2>Add a momento:</h2>
+    <form action="/add_momento" method="post">
+      <div><textarea name="text" rows="3" cols="60"></textarea></div>
+      <div><input type="submit" value="Add"></div>
+    </form>
+
+    <a href="{{ url|safe }}">{{ url_linktext }}</a>
+
+  </body>
+</html>
+{% endautoescape %}
