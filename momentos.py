@@ -1,4 +1,5 @@
 import os
+import math
 import webapp2
 import cgi
 import urllib
@@ -111,15 +112,15 @@ class Momento(ndb.Model):
                     found_momentos[result.key] = result
 
         # Now compute distances and sort by distance.
-        # momentos_by_distance = []
-        # for momento in found_momentos.itervalues():
-        #     distance = _earth_distance(lat, lon, momento.location.lat, momento.location.lon)
-        #     momentos_by_distance.append((distance, momento))
+        momentos_by_distance = []
+        for momento in found_momentos.itervalues():
+            distance = _earth_distance(lat, lon, momento.location.lat, momento.location.lon)
+            momentos_by_distance.append((distance, momento))
 
-        # momentos_by_distance.sort()
+        momentos_by_distance.sort()
 
         # return momentos_by_distance
-        return results
+        return momentos_by_distance
 
 class DebugPage(webapp2.RequestHandler):
 
@@ -147,7 +148,7 @@ class GetMomentos(webapp2.RequestHandler):
         momentos = Momento.near_location(user_pos_lat, user_pos_lon, 25, (2, 0))
 
         self.response.headers['Content-Type'] = 'application/json'
-        momento_list = [ m.serialize() for m in momentos ]
+        momento_list = [ m[1].serialize() for m in momentos ]
         obj = {
             'momentos': momento_list, 
           }
