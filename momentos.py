@@ -30,12 +30,19 @@ class Momento(ndb.Model):
             'date' : self.date.isoformat(),
             'text' : self.text,
             'location' : self.location,
-            'thumbnail' : self.thumbnail,
         }
         if self.author:
             d['author'] = self.author.nickname()
         else:
             d['author'] = None
+        if self.thumbnail:
+            d['thumbnail'] = '/momento_thumbnail?momento_id=' + self.key.urlsafe()
+        else:
+            d['thumbnail'] = None
+        if self.image:
+            d['image'] = '/momento_image?momento_id=' + self.key.urlsafe()
+        else:
+            d['image'] = None
         return d
 
 
@@ -74,8 +81,18 @@ class GetMomentoImage(webapp2.RequestHandler):
         key = ndb.Key(urlsafe=self.request.get('momento_id'))
         momento = key.get()
         if momento and momento.image:
-            self.response.headers['Content-Type'] = 'image/png'
+            self.response.headers['Content-Type'] = 'image/jpg'
             self.response.out.write(momento.image)
+        else:
+            self.error(404)
+
+class GetMomentoThumbnail(webapp2.RequestHandler):
+    def get(self):
+        key = ndb.Key(urlsafe=self.request.get('momento_id'))
+        momento = key.get()
+        if momento and momento.thumbnail:
+            self.response.headers['Content-Type'] = 'image/jpg'
+            self.response.out.write(momento.thumbnail)
         else:
             self.error(404)
 
@@ -101,5 +118,6 @@ application = webapp2.WSGIApplication([
     ('/add_momento', PostMomento),
     ('/get_momentos', GetMomentos),
     ('/momento_image', GetMomentoImage),
+    ('/momento_thumbnail', GetMomentoThumbnail),
 ], debug=True)
 
