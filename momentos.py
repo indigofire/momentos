@@ -7,6 +7,7 @@ import json
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
+from google.appengine.ext import db
 
 
 JINJA_ENVIRONMENT = jinja2.Environment(
@@ -22,7 +23,7 @@ class Momento(ndb.Model):
     image = ndb.BlobProperty(default=None)
     thumbnail = ndb.BlobProperty(default=None)
 
-    def serialize(self, image=False):
+    def serialize(self):
         d = {
             'key' : self.key.urlsafe(),
             'date' : self.date.isoformat(),
@@ -34,8 +35,6 @@ class Momento(ndb.Model):
             d['author'] = self.author.nickname()
         else:
             d['author'] = None
-        if image:
-            d['image'] = self.image
         return d
 
 
@@ -69,15 +68,15 @@ class GetMomentos(webapp2.RequestHandler):
           }
         self.response.out.write(json.dumps(obj))
 
-class GetMomento(webapp2.RequestHandler):
+class GetMomentoImage(webapp2.RequestHandler):
     def get(self):
         key = ndb.Key(urlsafe=self.request.get('momento_id'))
         momento = key.get()
-        obj = {
-            'id' : self.request.get('momento_id'),
-            'momento': momento.serialize(image=True), 
-          }
-        self.response.out.write(json.dumps(obj))
+        if momento and momento.image:
+            self.response.headers['Content-Type'] = 'image/png'
+            self.response.out.write(momento.image)
+        else:
+            self.error(404)
 
 class PostMomento(webapp2.RequestHandler):
     def post(self):
@@ -87,6 +86,8 @@ class PostMomento(webapp2.RequestHandler):
             momento.author = users.get_current_user()
 
         momento.text = self.request.get('text')
+        image = self.request.get('image')
+        momento.image = db.Blob(image)
         momento.put()
 
         self.redirect('/debug')
@@ -95,6 +96,6 @@ application = webapp2.WSGIApplication([
     ('/debug', DebugPage),
     ('/add_momento', PostMomento),
     ('/get_momentos', GetMomentos),
-    ('/momento', GetMomento),
+    ('/momento_image', GetMomentoImage),
 ], debug=True)
 

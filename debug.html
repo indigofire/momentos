@@ -8,15 +8,17 @@
       <div><input type="submit" value="Get"></div>
     </form>
 
-    <h2>Get a single momento</h2>
-    <form action="/momento" method="get">
-      <div><textarea name="momento_id" rows="1" cols="25"></textarea></div>
+    <h2>Momento Image</h2>
+    <form action="/momento_image" method="get">
+      <div><textarea name="momento_id" rows="1" cols="80"></textarea></div>
       <div><input type="submit" value="Show"></div>
     </form>
-    
+
     <h2>Add a momento:</h2>
-    <form action="/add_momento" method="post">
+    <form action="/add_momento" enctype="multipart/form-data" method="post">
       <div><textarea name="text" rows="3" cols="60"></textarea></div>
+      <div><label>Image:</label></div>
+      <div><input type="file" name="image"/></div>
       <div><input type="submit" value="Add"></div>
     </form>
 
