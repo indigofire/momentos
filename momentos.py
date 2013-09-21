@@ -81,7 +81,7 @@ class GetMomentoImage(webapp2.RequestHandler):
         key = ndb.Key(urlsafe=self.request.get('momento_id'))
         momento = key.get()
         if momento and momento.image:
-            self.response.headers['Content-Type'] = 'image/jpg'
+            self.response.headers['Content-Type'] = 'image/jpeg'
             self.response.out.write(momento.image)
         else:
             self.error(404)
@@ -91,7 +91,7 @@ class GetMomentoThumbnail(webapp2.RequestHandler):
         key = ndb.Key(urlsafe=self.request.get('momento_id'))
         momento = key.get()
         if momento and momento.thumbnail:
-            self.response.headers['Content-Type'] = 'image/jpg'
+            self.response.headers['Content-Type'] = 'image/jpeg'
             self.response.out.write(momento.thumbnail)
         else:
             self.error(404)
