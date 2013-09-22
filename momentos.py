@@ -24,13 +24,14 @@ GEOBOX_CONFIGS = (
 )
 
 def _earth_distance(lat1, lon1, lat2, lon2):
-  lat1, lon1 = math.radians(float(lat1)), math.radians(float(lon1))
-  lat2, lon2 = math.radians(float(lat2)), math.radians(float(lon2))
-  return RADIUS * math.acos(math.sin(lat1) * math.sin(lat2) +
+    lat1, lon1 = math.radians(float(lat1)), math.radians(float(lon1))
+    lat2, lon2 = math.radians(float(lat2)), math.radians(float(lon2))
+    return RADIUS * math.acos(math.sin(lat1) * math.sin(lat2) +
       math.cos(lat1) * math.cos(lat2) * math.cos(lon2 - lon1))
 
+dirname = os.path.dirname(__file__)
 JINJA_ENVIRONMENT = jinja2.Environment(
-    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+    loader=jinja2.FileSystemLoader(dirname),
     extensions=['jinja2.ext.autoescape'])
 
 class UserPhoto(ndb.Model):
@@ -38,6 +39,7 @@ class UserPhoto(ndb.Model):
     userid = ndb.StringProperty(indexed=True)
     image = ndb.BlobProperty()
 
+	
 class Momento(ndb.Model):
     """Models a single momento"""
     author = ndb.UserProperty()
@@ -154,16 +156,18 @@ class DebugPage(webapp2.RequestHandler):
 
 class GetMomentos(webapp2.RequestHandler):
     def get(self):
+
         user_pos_lat = float(self.request.get('lat'))
         user_pos_lon = float(self.request.get('lon'))
         momentos = Momento.near_location(user_pos_lat, user_pos_lon, 25, (2, 0))
 
-        self.response.headers['Content-Type'] = 'application/json'
         momento_list = [ m[1].serialize() for m in momentos ]
         obj = {
-            'momentos': momento_list, 
-          }
-        self.response.out.write(json.dumps(obj))
+			'momento_list': momento_list,
+        }
+		
+        template = JINJA_ENVIRONMENT.get_template('momentos.html')
+        self.response.write(template.render(obj))
 
 class GetMomentoImage(webapp2.RequestHandler):
     def get(self):
@@ -221,6 +225,18 @@ class UserPhotoRequestHandler(webapp2.RequestHandler):
 
         self.redirect('/debug')
 
+class LoginPage(webapp2.RequestHandler):
+	def get(self):
+		template = JINJA_ENVIRONMENT.get_template('login.html')		
+		self.response.out.write(template.render())		
+
+class Signin(webapp2.RequestHandler):
+	def post(self):
+		#if self.request.get('email')  is "jawad_atiq@gmail.com":
+		self.redirect('/debug')
+		#else:
+			#self.redirect('/signin')			
+	
 application = webapp2.WSGIApplication([
     ('/debug', DebugPage),
     ('/add_momento', PostMomento),
@@ -228,5 +244,7 @@ application = webapp2.WSGIApplication([
     ('/momento_image', GetMomentoImage),
     ('/momento_thumbnail', GetMomentoThumbnail),
     ('/userpic', UserPhotoRequestHandler),
+	('/login', LoginPage),
+	('/signin', Signin),
 ], debug=True)
 
