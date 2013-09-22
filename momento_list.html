@@ -23,52 +23,41 @@
 
 	<div class='container'>
 		<div class='row-fluid momento_header'>
-			<div class='span12'>
-				<h1>Kitchener, ON</h1>
-			</div>
+			<div class='span5'></div>
+			<div class='span2'><img class='logo' src="images/Final Logo.png"></div>
+			<div class='span1'></div>
+			<div class='span4 location'>Kitchener, ON</div>
 		</div>
-	</div>
+
 	{% for momento in momento_list %}
-    <div class='container cust_container'>
-				
-		<div class='row-fluid '>
-			<div class='span3'>
-				<div class='span3'></div>
-				<img class='span6 thumbnail' src="{{momento.userpic}}"/>
-				<div class='span3'></div>
+		<div class='container cust_container'>
+			
+			<div class='row'>
+				<div class='span1 profilepic'><img class='userpic' src="{{momento.userpic}}"/></div>
+				<div class='span3 author'>{{momento.author}}</div>
+				<div class='span7 picturediv'><img class='picture' src="{{momento.thumbnail}}" alt=""></div>
+				<div class='span1'></div>
 			</div>
-			<div class='span9 author'>{{momento.author}}</div> <!-- AUTHOR -->
-		</div>
-		
-		<div class='row-fluid '>
-			<div class='span3'></div>
-			<div class='span9'>
-				<div class='span2'></div>
-				<div class='span8 thumbnail'>
-					<img src="{{momento.thumbnail}}" alt=""> <!-- VIDEO-->
+			
+			<div class='row-fluid ' style="margin-top: 5px">
+				<div class='span4'></div>
+				<div class='span7 description'>
+					<img class="quotes" src="images/opening-quotes.png">
+						{{momento.text}}"
+					<img class="quotes" src="images/closing-quotes.png">
 				</div>
-				<div class='span2'></div>
+				<div class='span1'></div>
 			</div>
-		</div>
-		
-		<div class='row-fluid '>
-			<div class='span3'></div>
-			<div class='span9'><h4><span class='description'>
-				<img class="quotes" src="images/opening-quotes.png">
-					{{momento.text}}"
-				<img class="quotes" src="images/closing-quotes.png">
-			<span></h4></div> <!-- DESCRIPTION-->
-		</div>
-		
-		<div class='row-fluid '>
-			<div class='span2 arrow'></div>
-			<div class='span3 distance'></div> <!-- DISTANCE -->
-			<div class='span2 clockicon'><img src=""/></div>
-			<div class='span5 time'><h5>{{momento.date}}</h5></div> <!-- DATE -->
-		</div>
-    </div> <!-- /container -->
+			
+			<div class='row-fluid '>
+				<div class='span4'></div>	
+				<div class='span7 time'><h5>{{momento.date}}</h5></div> <!-- DATE -->
+				<div class='span1'></div>
+			</div>
+		</div> <!-- /container -->
     {% endfor %}
     
+	</div>
   </body>
 </html>
 {% endautoescape %}

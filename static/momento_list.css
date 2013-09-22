@@ -6,30 +6,36 @@
 .momento_header
 {
 	border-bottom: 1px solid grey;
-	text-align: right;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	text-align: right;	
+}
+
+.location
+{
 	color: #339900;
+	font-size: 40px;
 }
 
 .cust_container
 {
 	padding-top: 15px;
-	border-bottom: 1px solid grey;
-}
-
-.video_frame
-{
+	border-bottom: 1px solid grey ;
 }
 
 .description
 {
 	color: grey;
 	font-size: 22pt;
+	text-align: left;
+	font-weight: bold;
 }
 
 .author
 {
-	font-size: 30pt;
+	font-size: 20pt;
 	font-weight: bold;
+	text-align:left;
 }
 
 .distance
@@ -48,4 +54,34 @@
 {
 	width: 30px;
 	heigth: 30px;
+}
+
+.picturediv
+{
+	display:table-cell; 
+	vertical-align:middle; 
+	text-align:left;
+	border-left:1px solid grey;
+}
+.picture
+{
+	width: 50%;
+	margin-left: 40px;
+}
+
+.profilepic
+{
+	display:table-cell; 
+	vertical-align:middle; 
+	text-align:middle;
+}
+
+.userpic
+{
+	width: 50px
+}
+
+.logo
+{
+	width: 60px;
 }
