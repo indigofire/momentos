@@ -68,7 +68,8 @@ class Momento(ndb.Model):
             else:
                 d['userpic'] = '/static/default_userpic.jpg'
         else:
-            d['author'] = None
+            d['author'] = 'Vejey Gandier'
+            d['userpic'] = '/static/vejey.jpg'
         if self.thumbnail:
             d['thumbnail'] = '/momento_thumbnail?momento_id=' + self.key.urlsafe()
         else:
