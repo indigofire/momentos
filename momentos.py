@@ -191,13 +191,7 @@ class PostMomento(webapp2.RequestHandler):
 
 class UserPhotoRequestHandler(webapp2.RequestHandler):
     def get(self):
-        print "HABLA HABLA HABLA"
         userid = self.request.get('user')
-        q = UserPhoto.query()
-        ups = q.fetch(100)
-        for up in ups:
-            if up.userid: print "Found userid " + up.userid
-            else: print "Found user photo without ID"
         print "Looking up user photo for id " + userid
         q = UserPhoto.query(UserPhoto.userid == userid)
         r = q.fetch(1)
@@ -213,7 +207,10 @@ class UserPhotoRequestHandler(webapp2.RequestHandler):
         image = self.request.get('image')
         if user and image:
             print "Adding photo for userid " + user.user_id()
-            up = UserPhoto(userid=user.user_id(), image=image)
+            thumbnail = images.resize(image, 100, 100)
+            up = UserPhoto.get_or_insert(user.user_id())
+            up.userid = user.user_id()
+            up.image = thumbnail
             up.put()
 
         self.redirect('/debug')
