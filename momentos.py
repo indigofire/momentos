@@ -64,7 +64,7 @@ class Momento(ndb.Model):
                 logging.debug("Sending string for user ID " + self.author.user_id())
                 d['userpic'] = '/userpic?user=' + self.author.user_id()
             else:
-                d['userpic'] = None
+                d['userpic'] = '/static/default_userpic.jpg'
         else:
             d['author'] = None
         if self.thumbnail:
