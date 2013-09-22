@@ -12,6 +12,7 @@
 
 .cust_container
 {
+	padding-top: 15px;
 	border-bottom: 1px solid grey;
 }
 
@@ -22,7 +23,15 @@
 .description
 {
 	color: grey;
+	font-size: 22pt;
 }
+
+.author
+{
+	font-size: 30pt;
+	font-weight: bold;
+}
+
 .distance
 {
 	text-align: left;
@@ -33,4 +42,10 @@
 {
 	text-align: right;
 	color: grey;
+}
+
+.quotes
+{
+	width: 30px;
+	heigth: 30px;
 }

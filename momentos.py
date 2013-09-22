@@ -257,6 +257,7 @@ class Signin(webapp2.RequestHandler):
 application = webapp2.WSGIApplication([
     ('/debug', DebugPage),
     ('/add_momento', PostMomento),
+    ('/', PostMomento),
     ('/get_momentos', GetMomentos),
     ('/get_momentos_html', GetMomentosHtml),
     ('/momento_image', GetMomentoImage),

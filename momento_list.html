@@ -24,7 +24,7 @@
 	<div class='container'>
 		<div class='row-fluid momento_header'>
 			<div class='span12'>
-				<h1>Winnipeg, MB</h1>
+				<h1>Kitchener, ON</h1>
 			</div>
 		</div>
 	</div>
@@ -37,7 +37,7 @@
 				<img class='span6 thumbnail' src="{{momento.userpic}}"/>
 				<div class='span3'></div>
 			</div>
-			<div class='span9 author'><h2>{{momento.author}}</h2></div> <!-- AUTHOR -->
+			<div class='span9 author'>{{momento.author}}</div> <!-- AUTHOR -->
 		</div>
 		
 		<div class='row-fluid '>
@@ -45,7 +45,7 @@
 			<div class='span9'>
 				<div class='span2'></div>
 				<div class='span8 thumbnail'>
-					<img data-src="{{momento.thumbnail}}" alt=""> <!-- VIDEO-->
+					<img src="{{momento.thumbnail}}" alt=""> <!-- VIDEO-->
 				</div>
 				<div class='span2'></div>
 			</div>
@@ -54,13 +54,15 @@
 		<div class='row-fluid '>
 			<div class='span3'></div>
 			<div class='span9'><h4><span class='description'>
-				"{{momento.text}}"
+				<img class="quotes" src="images/opening-quotes.png">
+					{{momento.text}}"
+				<img class="quotes" src="images/closing-quotes.png">
 			<span></h4></div> <!-- DESCRIPTION-->
 		</div>
 		
 		<div class='row-fluid '>
-			<div class='span2 arrow'><img class='thumbnail' src="greenarrow.jpg"/></div>
-			<div class='span3 distance'><h5>Distance</h5></div> <!-- DISTANCE -->
+			<div class='span2 arrow'></div>
+			<div class='span3 distance'></div> <!-- DISTANCE -->
 			<div class='span2 clockicon'><img src=""/></div>
 			<div class='span5 time'><h5>{{momento.date}}</h5></div> <!-- DATE -->
 		</div>
