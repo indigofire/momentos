@@ -54,15 +54,14 @@
 .quotes
 {
 	width: 30px;
-	heigth: 30px;
+	height: 30px;
 }
 
 .picturediv
 {
 	display:table-cell; 
-	vertical-align:middle; 
 	text-align:left;
-	border-left:1px solid grey;
+	border-left:1px solid grey;	
 }
 .picture
 {
