@@ -1,0 +1,36 @@
+.col
+{
+	border:1px solid black;
+}
+
+.momento_header
+{
+	border-bottom: 1px solid grey;
+	text-align: right;
+	color: #339900;
+}
+
+.cust_container
+{
+	border-bottom: 1px solid grey;
+}
+
+.video_frame
+{
+}
+
+.description
+{
+	color: grey;
+}
+.distance
+{
+	text-align: left;
+	color: grey;
+}
+
+.time
+{
+	text-align: right;
+	color: grey;
+}
