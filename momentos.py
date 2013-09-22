@@ -166,7 +166,7 @@ class GetMomentos(webapp2.RequestHandler):
 			'momento_list': momento_list,
         }
 		
-        template = JINJA_ENVIRONMENT.get_template('momentos.html')
+        template = JINJA_ENVIRONMENT.get_template('momento_list.html')
         self.response.write(template.render(obj))
 
 class GetMomentosHtml(webapp2.RequestHandler):
