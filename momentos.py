@@ -212,6 +212,14 @@ class PostMomento(webapp2.RequestHandler):
 
         self.redirect('/debug')
 
+class ClearMomentos(webapp2.RequestHandler):
+    def get(self):
+        q = Momento.query()
+        f = q.fetch(100)
+        for m in f:
+            m.key.delete()
+        self.redirect('/debug')
+
 class UserPhotoRequestHandler(webapp2.RequestHandler):
     def get(self):
         userid = self.request.get('user')
@@ -257,6 +265,7 @@ class Signin(webapp2.RequestHandler):
 application = webapp2.WSGIApplication([
     ('/debug', DebugPage),
     ('/add_momento', PostMomento),
+    ('/delete_all_momentos', ClearMomentos),
     ('/', PostMomento),
     ('/get_momentos', GetMomentos),
     ('/get_momentos_html', GetMomentosHtml),
