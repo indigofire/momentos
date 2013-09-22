@@ -11,57 +11,41 @@
 		<!-- Le styles -->
 		<link href="bootstrap/css/bootstrap.css" rel="stylesheet">    
 		<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+		
+		<style type="text/css">
+			.heading
+			{
+				text-align: center;
+				font-size: 30px;
+				color: purple;
+				padding-top: 30px;
+				padding-bottom: 30px;
+				font-weight: bold;
+			}
+		</style>
 	</head>
   <body>
 	<div class="container">
-		<div class="span12"><img style="width:60px;" src="images/FinalLogo.png"></div>
-	</div>
-  
-  
-  
-  
-    <h1>Welcome to Momentos!</h1>
-    <h2>Show me momentos</h2>
-    <form action="/get_momentos" method="get">
-      <div>
-        <input type="text" name="lat" size="20" value="43.450909"></text>
-        <input type="text" name="lon" size="20" value="-80.497872"></text>
-      </div>
-      <div><input type="submit" value="Get"></div>
-    </form>
-
-    <h2>Momento Image</h2>
-    <form action="/momento_image" method="get">
-      <div><input type="text" name="momento_id" size="80"></textarea></div>
-      <div><input type="submit" value="Show"></div>
-    </form>
-
-    <h2>Add a momento:</h2>
-    <form action="/add_momento" enctype="multipart/form-data" method="post">
-      <div>
-        <input type="text" name="lat" size="20" value="43.450909"></text>
-        <input type="text" name="lon" size="20" value="-80.497872"></text>
-      </div>
-      <div><textarea name="text" rows="3" cols="60"></textarea></div>
-      <div><label>Image:</label></div>
-      <div><input type="file" name="image"/></div>
-      <div><input type="submit" value="Add"></div>
-    </form>
-
-    <h2>Add my userpic:</h2>
-    <form action="/userpic" enctype="multipart/form-data" method="post">
-      <div><label>Image:</label></div>
-      <div><input type="file" name="image"/></div>
-      <div><input type="submit" value="Add"></div>
-    </form>
-
-    <h2>Get userpic:</h2>
-    <form action="/userpic" method="get">
-      <div><input type="text" name="user" size="20" value=""></text></div>
-      <div><input type="submit" value="Get"></div>
-    </form>
-
-    <a href="{{ url|safe }}">{{ url_linktext }}</a>
+		<div class="row heading">Welcome to Memento</div>
+		<div class="row">
+				<div class="span12" style=" text-align: center;"><img style="width:200px;" src="images/FinalLogo.png"></div>
+		</div>
+		<div class="row" style=" text-align: center;">	
+		<form action="/add_momento" enctype="multipart/form-data" method="post">
+			<div>
+				<input type="hidden" name="lat" size="20" value="43.450909"></text>
+				<input type="hidden" name="lon" size="20" value="-80.497872"></text>
+			</div>
+			<div class="row"><textarea name="text" rows="3" cols="60">What are you feeling?</textarea></div>
+			<div class="row">
+				<div class="span5"></div>			
+				<div class="span2" style="width: 50px"><input class="btn btn-large btn-success" type="file" name="image"/></div>
+				<div class="span5"></div>	
+			</div>
+			<div><input class="btn btn-large btn-primary" type="submit" value="Leave your mark"></div>
+		</form>
+		</div>
+	</div>        
 
   </body>
 </html>

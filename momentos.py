@@ -211,7 +211,23 @@ class PostMomento(webapp2.RequestHandler):
             lon=float(self.request.get('lon')),
             image=self.request.get('image'))
 
-        self.redirect('/debug')
+        self.redirect('/')
+		
+    def get(self):
+        if users.get_current_user():
+            url = users.create_logout_url(self.request.uri)
+            url_linktext = 'Logout'
+        else:
+            url = users.create_login_url(self.request.uri)
+            url_linktext = 'Login'
+
+        template_values = {
+            'url': url,
+            'url_linktext': url_linktext,
+        }
+
+        template = JINJA_ENVIRONMENT.get_template('AddMomento.html')
+        self.response.write(template.render(template_values))
 
 class ClearMomentos(webapp2.RequestHandler):
     def get(self):
