@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Momento</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<!-- Le styles -->
+		<link href="bootstrap/css/bootstrap.css" rel="stylesheet">    
+		<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+	</head>
+  <body>
+	<div class="container">
+		<div class="span12"><img style="width:60px;" src="images/FinalLogo.png"></div>
+	</div>
+  
+  
+  
+  
+    <h1>Welcome to Momentos!</h1>
+    <h2>Show me momentos</h2>
+    <form action="/get_momentos" method="get">
+      <div>
+        <input type="text" name="lat" size="20" value="43.450909"></text>
+        <input type="text" name="lon" size="20" value="-80.497872"></text>
+      </div>
+      <div><input type="submit" value="Get"></div>
+    </form>
+
+    <h2>Momento Image</h2>
+    <form action="/momento_image" method="get">
+      <div><input type="text" name="momento_id" size="80"></textarea></div>
+      <div><input type="submit" value="Show"></div>
+    </form>
+
+    <h2>Add a momento:</h2>
+    <form action="/add_momento" enctype="multipart/form-data" method="post">
+      <div>
+        <input type="text" name="lat" size="20" value="43.450909"></text>
+        <input type="text" name="lon" size="20" value="-80.497872"></text>
+      </div>
+      <div><textarea name="text" rows="3" cols="60"></textarea></div>
+      <div><label>Image:</label></div>
+      <div><input type="file" name="image"/></div>
+      <div><input type="submit" value="Add"></div>
+    </form>
+
+    <h2>Add my userpic:</h2>
+    <form action="/userpic" enctype="multipart/form-data" method="post">
+      <div><label>Image:</label></div>
+      <div><input type="file" name="image"/></div>
+      <div><input type="submit" value="Add"></div>
+    </form>
+
+    <h2>Get userpic:</h2>
+    <form action="/userpic" method="get">
+      <div><input type="text" name="user" size="20" value=""></text></div>
+      <div><input type="submit" value="Get"></div>
+    </form>
+
+    <a href="{{ url|safe }}">{{ url_linktext }}</a>
+
+  </body>
+</html>
+{% endautoescape %}
