@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link type="text/css" rel="stylesheet" href="/static/momento_list.css" />
+</head>
+  <body>
+	<div class="content">
+  	{% for m in momentos %}
+		<div class="top_block momento">
+			<div class="content">
+				<div class="background userpic">
+				</div>
+				<div class="left_block userpic">
+					<div class="content">
+						<img src="{{ m.userpic }}"/>
+					</div>
+				</div>
+				<div class="background thumbnail">
+				</div>
+				{% if m.thumbnail %}
+				<div class="right_block thumbnail">
+					<div class="content">
+						<img src="{{ m.thumbnail }}"/>
+					</div>
+				</div>
+				{% endif %}
+				<div class="background content">
+				</div>
+				<div class="center_block content">
+					<div class="content">
+						<div class="top_block username">
+							<div class="content">
+								{{ m.author }}
+							</div>
+						</div>
+						<div class="center_block message">
+							<div class="content">
+								{{ m.text }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+		<div class="top_block block_3">
+			<div class="content">
+			</div>
+		</div>
+		</div>
+  </body>
+</html>

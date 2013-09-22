@@ -165,6 +165,19 @@ class GetMomentos(webapp2.RequestHandler):
           }
         self.response.out.write(json.dumps(obj))
 
+class GetMomentosHtml(webapp2.RequestHandler):
+    def get(self):
+        user_pos_lat = float(self.request.get('lat'))
+        user_pos_lon = float(self.request.get('lon'))
+        momentos = Momento.near_location(user_pos_lat, user_pos_lon, 25, (2, 0))
+
+        momento_list = [ m[1].serialize() for m in momentos ]
+        template_values = {
+            'momentos': momento_list, 
+          }
+        template = JINJA_ENVIRONMENT.get_template('momento_list.html')
+        self.response.write(template.render(template_values))
+
 class GetMomentoImage(webapp2.RequestHandler):
     def get(self):
         key = ndb.Key(urlsafe=self.request.get('momento_id'))
@@ -229,6 +242,7 @@ application = webapp2.WSGIApplication([
     ('/debug', DebugPage),
     ('/add_momento', PostMomento),
     ('/get_momentos', GetMomentos),
+    ('/get_momentos_html', GetMomentosHtml),
     ('/momento_image', GetMomentoImage),
     ('/momento_thumbnail', GetMomentoThumbnail),
     ('/userpic', UserPhotoRequestHandler),
