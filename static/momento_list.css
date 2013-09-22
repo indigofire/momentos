@@ -1,138 +1,36 @@
-/**
- * Layout generated with http://layzilla.com
- * Layout generator is free of use.
- * We appreciate if you leave this comment block in commercial use of generator.
- * All comment and ideas can be submitted to us using contacts below.
- *
- *    site: www.jmholding.com
- *   email: info@jmholding.ru
- *  twitter: @jmholding
- */
-html, body {
-	margin: 0;
-	padding: 0;
-	width: 100%;
-	height: 100%; 
+.col
+{
+	border:1px solid black;
 }
 
-.content {
-	min-height: 100%;
-	position: relative;
-	overflow: auto;
-	z-index: 0; 
+.momento_header
+{
+	border-bottom: 1px solid grey;
+	text-align: right;
+	color: #339900;
 }
 
-.background {
-	position: absolute;
-	z-index: -1;
-	top: 0;
-	bottom: 0;
-	margin: 0;
-	padding: 0;
+.cust_container
+{
+	border-bottom: 1px solid grey;
 }
 
-.top_block {
-	width: 100%;
-	display: block; 
+.video_frame
+{
 }
 
-.bottom_block {
-	position: absolute;
-	width: 100%;
-	display: block;
-	bottom: 0; 
+.description
+{
+	color: grey;
+}
+.distance
+{
+	text-align: left;
+	color: grey;
 }
 
-.left_block {
-	display: block;
-	float: left; 
+.time
+{
+	text-align: right;
+	color: grey;
 }
-
-.right_block {
-	display: block;
-	float: right; 
-}
-
-.center_block {
-	display: block;
-	width: auto; 
-}
-
-.momento {
-	width: 100%;
-	height: 90px;
-	background-color: #ffffff;
-	rheight: 100;
-}
-
-.background.mypic {
-	height: auto !important;
-	padding-bottom: 0;
-	left: 0;
-	width: 100px;
-	background-color: #9966ff; 
-}
-
-.mypic {
-	height: 100px;
-	width: 100px;
-	padding-bottom: 0px;
-}
-
-.background.mythumbnail {
-	height: auto !important;
-	padding-bottom: 0;
-	right: 0;
-	width: 100px;
-	background-color: #996699; 
-}
-
-.mythumbnail {
-	height: 100px;
-	width: 100px;
-	padding-bottom: 0px;
-}
-
-.background.content {
-	height: auto !important;
-	padding-bottom: 0;
-	left: 0;
-	right: 0;
-	background-color: #996666;
-	margin-left: 100px;
-	margin-right: 100px; 
-}
-
-.content {
-	width: auto;
-	height: auto;
-	padding-bottom: 0px;
-}
-
-.myname {
-	width: 100%;
-	height: 30px;
-	background-color: #9933ff;
-}
-
-.background.mymessage {
-	height: auto !important;
-	padding-bottom: 0;
-	left: 0;
-	right: 0;
-	background-color: #993399;
-	margin-top: 30px; 
-}
-
-.mymessage {
-	width: auto;
-	height: auto;
-	padding-bottom: 0px;
-}
-
-.block_3 {
-	width: 100%;
-	height: 70px;
-	background-color: #999966;
-}
-
