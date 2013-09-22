@@ -58,6 +58,12 @@ class Momento(ndb.Model):
         }
         if self.author:
             d['author'] = self.author.nickname()
+            up = UserPhoto.get_by_id(self.author.user_id())
+            if up and up.image:
+                print "Sending string for user ID " + self.author.user_id()
+                d['userpic'] = '/userpic?user=' + self.author.user_id()
+            else:
+                d['userpic'] = None
         else:
             d['author'] = None
         if self.thumbnail:
