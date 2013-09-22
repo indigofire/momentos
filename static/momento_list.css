@@ -15,6 +15,7 @@
 {
 	color: #339900;
 	font-size: 40px;
+	font-weight: bold;
 }
 
 .cust_container
@@ -83,5 +84,5 @@
 
 .logo
 {
-	width: 60px;
+	width: 100px;
 }
