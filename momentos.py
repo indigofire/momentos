@@ -1,5 +1,6 @@
 import os
 import math
+import logging
 import webapp2
 import cgi
 import urllib
@@ -62,7 +63,7 @@ class Momento(ndb.Model):
             d['author'] = self.author.nickname()
             up = UserPhoto.get_by_id(self.author.user_id())
             if up and up.image:
-                print "Sending string for user ID " + self.author.user_id()
+                logging.debug("Sending string for user ID " + self.author.user_id())
                 d['userpic'] = '/userpic?user=' + self.author.user_id()
             else:
                 d['userpic'] = None
@@ -94,7 +95,7 @@ class Momento(ndb.Model):
             all_boxes.extend(geobox.compute_set(lat, lon, resolution, slice))
           else:
             all_boxes.append(geobox.compute(lat, lon, resolution, slice))
-        print "Geoboxes ", all_boxes
+        #logging.debug("Geoboxes " + str(all_boxes))
         momento.geoboxes = all_boxes
 
         momento.put()
@@ -113,14 +114,13 @@ class Momento(ndb.Model):
 
             resolution, slice, unused = params
             box = geobox.compute(lat, lon, resolution, slice)
-            print "Searching for box=%s at resolution=%s, slice=%s" % (box, resolution, slice)
+            logging.debug("Searching for box=%s at resolution=%s, slice=%s", box, resolution, slice)
             query = Momento.query(Momento.geoboxes == box)
             results = query.fetch(100)
-            print "Found %d results" % len(results)
+            logging.debug("Found %d results", len(results))
 
             # De-dupe results.
             for result in results:
-                print result.text
                 if result.key not in found_momentos:
                     found_momentos[result.key] = result
 
@@ -202,7 +202,7 @@ class PostMomento(webapp2.RequestHandler):
 class UserPhotoRequestHandler(webapp2.RequestHandler):
     def get(self):
         userid = self.request.get('user')
-        print "Looking up user photo for id " + userid
+        logging.info("Looking up user photo for id " + userid)
         q = UserPhoto.query(UserPhoto.userid == userid)
         r = q.fetch(1)
 
@@ -216,12 +216,16 @@ class UserPhotoRequestHandler(webapp2.RequestHandler):
         user = users.get_current_user()
         image = self.request.get('image')
         if user and image:
-            print "Adding photo for userid " + user.user_id()
+            logging.warn("Adding photo for userid " + user.user_id())
+            logging.info("Resizing image")
             thumbnail = images.resize(image, 100, 100)
+            logging.info("DB query")
             up = UserPhoto.get_or_insert(user.user_id())
+            logging.info("Posting")
             up.userid = user.user_id()
-            up.image = thumbnail
+            up.image = db.Blob(thumbnail)
             up.put()
+            logging.info("Done!")
 
         self.redirect('/debug')
 
