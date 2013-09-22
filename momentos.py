@@ -33,8 +33,13 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions=['jinja2.ext.autoescape'])
 
+class UserPhoto(ndb.Model):
+    """Model for storing user photos, since we can't get them directly"""
+    userid = ndb.StringProperty(indexed=True)
+    image = ndb.BlobProperty()
+
 class Momento(ndb.Model):
-    """Models an individual Guestbook entry with author, content, and date."""
+    """Models a single momento"""
     author = ndb.UserProperty()
     date = ndb.DateTimeProperty(auto_now_add=True)
     text = ndb.StringProperty(indexed=False)
@@ -184,11 +189,41 @@ class PostMomento(webapp2.RequestHandler):
 
         self.redirect('/debug')
 
+class UserPhotoRequestHandler(webapp2.RequestHandler):
+    def get(self):
+        print "HABLA HABLA HABLA"
+        userid = self.request.get('user')
+        q = UserPhoto.query()
+        ups = q.fetch(100)
+        for up in ups:
+            if up.userid: print "Found userid " + up.userid
+            else: print "Found user photo without ID"
+        print "Looking up user photo for id " + userid
+        q = UserPhoto.query(UserPhoto.userid == userid)
+        r = q.fetch(1)
+
+        if len(r) < 1 or r[0] is None or r[0].image is None:
+            self.error(404)
+        else:
+            self.response.headers['Content-Type'] = 'image/jpeg'
+            self.response.out.write(r[0].image)
+
+    def post(self):
+        user = users.get_current_user()
+        image = self.request.get('image')
+        if user and image:
+            print "Adding photo for userid " + user.user_id()
+            up = UserPhoto(userid=user.user_id(), image=image)
+            up.put()
+
+        self.redirect('/debug')
+
 application = webapp2.WSGIApplication([
     ('/debug', DebugPage),
     ('/add_momento', PostMomento),
     ('/get_momentos', GetMomentos),
     ('/momento_image', GetMomentoImage),
     ('/momento_thumbnail', GetMomentoThumbnail),
+    ('/userpic', UserPhotoRequestHandler),
 ], debug=True)
 

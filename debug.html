@@ -30,6 +30,19 @@
       <div><input type="submit" value="Add"></div>
     </form>
 
+    <h2>Add my userpic:</h2>
+    <form action="/userpic" enctype="multipart/form-data" method="post">
+      <div><label>Image:</label></div>
+      <div><input type="file" name="image"/></div>
+      <div><input type="submit" value="Add"></div>
+    </form>
+
+    <h2>Get userpic:</h2>
+    <form action="/userpic" method="get">
+      <div><input type="text" name="user" size="20" value=""></text></div>
+      <div><input type="submit" value="Get"></div>
+    </form>
+
     <a href="{{ url|safe }}">{{ url_linktext }}</a>
 
   </body>
